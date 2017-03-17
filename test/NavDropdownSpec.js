@@ -136,4 +136,20 @@ describe('<NavDropdown>', () => {
     assert.ok(ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'my-dropdown-toggle'));
     assert.ok(ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'my-dropdown-menu'));
   });
+
+  it('should properly handle the active prop', () => {
+    const instance = ReactTestUtils.renderIntoDocument(
+      <NavDropdown title='title' id='test-id' active={false} activeKey="1">
+        <MenuItem eventKey="1">
+          This menu item is active, but it's parent is not!
+        </MenuItem>
+      </NavDropdown>
+    )
+
+    const domNode = ReactDOM.findDOMNode(instance)
+    const children = ReactTestUtils.scryRenderedComponentsWithType(instance, MenuItem)
+
+    expect(domNode.className).to.not.match(/active/)
+    expect(ReactDOM.findDOMNode(children[0]).className).to.match(/active/)
+  });
 });
